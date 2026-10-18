@@ -1,0 +1,11 @@
+.env
+.env.*
+.venv
+.git
+.idea
+.langgraph_api
+__pycache__
+**/__pycache__
+*.egg-info
+**/*.pyc
+tests

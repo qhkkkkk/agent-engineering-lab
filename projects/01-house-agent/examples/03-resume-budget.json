@@ -1,0 +1,7 @@
+{
+  "assistant_id": "house_agent",
+  "command": {"resume": "太原，小店区，500-1500元/月，推荐3套"},
+  "context": {"user_id": "demo-user-001"},
+  "stream_mode": ["updates", "messages"],
+  "stream_subgraphs": true
+}

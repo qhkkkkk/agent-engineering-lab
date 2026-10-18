@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能租房助手</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入 marked 库用于解析 Markdown -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0 30px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 18px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2575fc;
+        }
+
+        .search-btn {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.3);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #2575fc;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .feature-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .house-list {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center;
+        }
+
+        .houses {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .house-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .house-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .house-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .house-info {
+            padding: 20px;
+        }
+
+        .house-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .house-location {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .house-location i {
+            margin-right: 5px;
+            color: #2575fc;
+        }
+
+        .house-price {
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .house-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .chat-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+            z-index: 1000;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .chat-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(37, 117, 252, 0.5);
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 450px;
+            height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 20px 25px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 18px;
+            max-width: 85%;
+            clear: both;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 18px 18px 0 18px;
+            align-self: flex-end;
+        }
+
+        .ai-message {
+            background: white;
+            color: #333;
+            padding: 12px 18px;
+            border-radius: 18px 18px 18px 0;
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .process-message {
+            background: #f5f5f5;
+            color: #666;
+            padding: 12px 18px;
+            border-radius: 18px 18px 18px 0;
+            border: 1px solid #e0e0e0;
+            align-self: flex-start;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            max-width: 85%;
+        }
+
+        .think-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 8px;
+        }
+
+        .think-title {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .think-toggle {
+            background: none;
+            border: none;
+            color: #777;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .think-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .think-content {
+            white-space: pre-line;
+            overflow: visible; /* 改为 visible 而不是 auto */
+            transition: max-height 0.3s ease-out;
+            max-height: none; /* 移除固定高度限制 */
+        }
+
+        .think-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+        }
+
+        .chat-input-area {
+            border-top: 1px solid #e9ecef;
+            padding: 18px;
+            display: flex;
+            gap: 12px;
+            background: white;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #2575fc;
+        }
+
+        .send-btn {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            font-size: 1rem;
+        }
+
+        .send-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Markdown 样式支持 */
+        .ai-message h1,
+        .ai-message h2,
+        .ai-message h3 {
+            margin-top: 0.5em;
+            margin-bottom: 0.3em;
+            font-weight: 600;
+        }
+
+        .ai-message p {
+            margin-bottom: 0.8em;
+        }
+
+        .ai-message ul,
+        .ai-message ol {
+            padding-left: 20px;
+            margin-bottom: 0.8em;
+        }
+
+        .ai-message li {
+            margin-bottom: 0.3em;
+        }
+
+        .ai-message strong {
+            font-weight: 600;
+        }
+
+        .ai-message em {
+            font-style: italic;
+        }
+
+        .ai-message code {
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .ai-message pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 0.8em;
+        }
+
+        .ai-message pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .ai-message blockquote {
+            border-left: 4px solid #2575fc;
+            padding-left: 12px;
+            color: #666;
+            margin-left: 0;
+            margin-bottom: 0.8em;
+        }
+
+        .typing-dots {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #999;
+            margin: 0 2px;
+            animation: typing 1.4s infinite both;
+        }
+
+        .typing-dots:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-5px);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e9ecef;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 92%;
+                right: 4%;
+                height: 75vh;
+                bottom: 80px;
+            }
+
+            .chat-icon {
+                bottom: 20px;
+                right: 20px;
+                width: 65px;
+                height: 65px;
+                font-size: 26px;
+            }
+
+            .houses {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .chat-container {
+                width: 500px;
+                height: 650px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>智能租房助手</h1>
+            <p class="subtitle">AI智能推荐，快速找到心仪房源。只需描述您的需求，智能助手将为您匹配最合适的租房选项</p>
+        </header>
+
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="输入城市、区域或小区名称">
+            <input type="text" class="search-input" placeholder="租金预算（元/月）">
+            <input type="text" class="search-input" placeholder="户型需求（如：1室1厅）">
+            <button class="search-btn">搜索房源</button>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="feature-title">AI智能推荐</h3>
+                <p class="feature-desc">基于您的需求，智能匹配最合适的房源，节省筛选时间</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3 class="feature-title">海量真实房源</h3>
+                <p class="feature-desc">覆盖全国主要城市，实时更新，确保信息准确可靠</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3 class="feature-title">智能对话咨询</h3>
+                <p class="feature-desc">通过自然对话理解您的需求，提供个性化租房建议</p>
+            </div>
+        </div>
+
+        <div class="house-list">
+            <h2 class="section-title">推荐房源</h2>
+            <div class="houses">
+                <div class="house-card">
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="公寓图片" class="house-img">
+                    <div class="house-info">
+                        <h3 class="house-title">整租·阳光公寓 1室1厅1卫</h3>
+                        <div class="house-location">
+                            <i class="fas fa-map-marker-alt"></i> 北京海淀·中关村
+                        </div>
+                        <div class="house-price">¥4500/月</div>
+                        <div class="house-tags">
+                            <span class="tag">近地铁</span>
+                            <span class="tag">精装修</span>
+                            <span class="tag">拎包入住</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="house-card">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="公寓图片" class="house-img">
+                    <div class="house-info">
+                        <h3 class="house-title">合租·青年社区 主卧独卫</h3>
+                        <div class="house-location">
+                            <i class="fas fa-map-marker-alt"></i> 上海浦东·陆家嘴
+                        </div>
+                        <div class="house-price">¥3200/月</div>
+                        <div class="house-tags">
+                            <span class="tag">室友友好</span>
+                            <span class="tag">智能门锁</span>
+                            <span class="tag">公共区域</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="house-card">
+                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="公寓图片" class="house-img">
+                    <div class="house-info">
+                        <h3 class="house-title">整租·温馨家园 2室1厅1卫</h3>
+                        <div class="house-location">
+                            <i class="fas fa-map-marker-alt"></i> 广州天河·珠江新城
+                        </div>
+                        <div class="house-price">¥5800/月</div>
+                        <div class="house-tags">
+                            <span class="tag">南北通透</span>
+                            <span class="tag">家电齐全</span>
+                            <span class="tag">小区安静</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>智能租房助手 · 首页卡片为展示样例 · 预约为模拟工单</p>
+        </footer>
+    </div>
+
+    <!-- 聊天图标 -->
+    <div class="chat-icon" id="chatIcon">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <!-- 聊天容器 -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <span>租房智能助手</span>
+            <button class="close-chat" id="closeChat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                您好！我是租房智能助手，可以帮助您寻找合适的房源。请告诉我您的需求，例如：城市、预算等。
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="输入您的租房需求...">
+            <button class="send-btn" id="sendBtn">发送</button>
+        </div>
+    </div>
+
+    <!-- 首页房源为静态展示；聊天请求后端 Agent 服务。 -->
+    <script src="config.js"></script>
+    <script src="sse.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>

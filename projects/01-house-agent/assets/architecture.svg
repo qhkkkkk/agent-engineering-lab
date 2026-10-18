@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 440" role="img" aria-labelledby="title desc">
+<title id="title">智能租房助手架构</title><desc id="desc">浏览器通过 Agent Server 调用主图；主图路由至推荐、预约、偏好和问答。MySQL 提供房源，检查点和 Store 由运行时提供。</desc>
+<defs><style>text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#e2e8f0} .label{font-size:21px;font-weight:600}.small{font-size:16px;fill:#a9bad1}rect.card{fill:#17283e;stroke:#3c5473;stroke-width:1.5}.line{fill:none;stroke:#5bd2c6;stroke-width:2.5}</style><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#5bd2c6"/></marker></defs>
+<rect width="1200" height="440" rx="20" fill="#0b1424"/>
+<text x="38" y="49" font-size="28" font-weight="700">一条请求，四条业务路径</text>
+<text x="38" y="78" class="small">LANGGRAPH · SQL TOOLS · HUMAN IN THE LOOP · MEMORY</text>
+<g text-anchor="middle"><rect class="card" x="36" y="157" width="165" height="105" rx="12"/><text x="118" y="198" class="label">浏览器</text><text x="118" y="228" class="small">HTML + SSE</text>
+<rect class="card" x="246" y="157" width="180" height="105" rx="12"/><text x="336" y="198" class="label">Agent Server</text><text x="336" y="228" class="small">thread / run / resume</text>
+<rect class="card" x="472" y="157" width="166" height="105" rx="12"/><text x="555" y="198" class="label">主图</text><text x="555" y="228" class="small">偏好加载 + 意图路由</text>
+<rect class="card" x="700" y="110" width="195" height="60" rx="10"/><text x="797" y="147" class="label">推荐 · SQL 闭环</text>
+<rect class="card" x="700" y="186" width="195" height="60" rx="10"/><text x="797" y="223" class="label">预约 · 中断采集</text>
+<rect class="card" x="700" y="262" width="195" height="60" rx="10"/><text x="797" y="299" class="label">偏好查询 / 问答</text>
+<rect class="card" x="952" y="110" width="210" height="60" rx="10"/><text x="1057" y="147" class="label">MySQL 房源</text>
+<rect class="card" x="952" y="206" width="210" height="116" rx="10"/><text x="1057" y="246" class="label">Checkpoint / Store</text><text x="1057" y="276" class="small">恢复执行 / 跨会话偏好</text><text x="1057" y="300" class="small">存储实现由运行方式决定</text></g>
+<g class="line" marker-end="url(#arrow)"><path d="M201 209H240"/><path d="M426 209H466"/><path d="M638 209H668V140H694"/><path d="M668 209V216H694"/><path d="M668 216V292H694"/><path d="M895 140H946"/><path d="M895 216H930V244H946"/><path d="M895 292H930V276H946"/></g>
+<text x="38" y="385" class="small">主图调度流程 · 模型负责理解与生成 · 工具执行动作 · 人工中断收集缺失信息</text>
+<text x="38" y="413" class="small">预约采用模拟工单；首页卡片为展示样例。Checkpoint 与 Store 分别负责执行恢复和长期记忆。</text>
+</svg>

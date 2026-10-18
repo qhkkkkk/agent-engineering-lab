@@ -1,0 +1,12 @@
+# Real credentials and runtime data
+.env
+.env.*
+!projects/01-house-agent/app/.env
+**/.venv/
+**/.langgraph_api/
+**/__pycache__/
+*.py[cod]
+**/*.egg-info/
+**/.idea/
+**/.DS_Store
+*.log

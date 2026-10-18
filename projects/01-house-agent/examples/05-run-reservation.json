@@ -1,0 +1,7 @@
+{
+  "assistant_id": "house_agent",
+  "input": {"messages": [{"role": "human", "content": "我要预约房子"}]},
+  "context": {"user_id": "demo-user-001"},
+  "stream_mode": ["updates", "messages"],
+  "stream_subgraphs": true
+}

@@ -1,0 +1,10 @@
+* text=auto
+*.md text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.svg text eol=lf
+projects/01-house-agent/data/*.sql -text
