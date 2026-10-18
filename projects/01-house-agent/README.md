@@ -51,6 +51,10 @@
 | **07** | [部署原理](docs/chapters/07-deployment.md) | 工程配置、Server/CLI/Studio/SDK、三种 Docker 路径、依赖与迁移隔离 |
 | **08** | [扩展设计](docs/chapters/08-evolution.md) | 消息管理、字段标准化、SQL 审批、custom stream、幂等与评测 |
 
+[![在线复习台预览](assets/study-desk.png)](https://qhkkkkk.github.io/agent-engineering-lab/)
+
+复习台可切换推荐、预约与主图流程，逐步查看关键状态和设计理由，并在当前浏览器保存阅读进度。
+
 ## 3. 横向查阅
 
 - [函数与状态索引](docs/implementation.md)：按文件找函数、按问题找章节。
